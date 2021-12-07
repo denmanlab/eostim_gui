@@ -33,7 +33,9 @@ O_Duration = 0.01 #Updates time.sleep()
 E_duration = 0.001
 
 Time_between_pulses = 0
-pulse_number = 0
+pulse_number = 100000
+## changed from 0 to 100000
+
 
 time_between_trains = 0
 number_of_trains = 1;run_x_times_ = number_of_trains

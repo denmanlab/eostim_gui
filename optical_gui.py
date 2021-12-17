@@ -151,11 +151,22 @@ def do_train():
             for pulse in range(int(pulse_number)):
                 print("train "+str(train+1)+"  pulse "+str(pulse+1))
                  #******start single pulse sequence
+                if (o_1_start > 0_2_start):
+                    
+                    board.digital[1].write(1)
+                    time.sleep(o_1_end)
+                    board.digital[1].write(0)
+                    else:
+                        
+                        board.digital[1].write(1)
+                        board.digital[2].write(1)
 
-                board.digital[1].write(1)
+                if (o_1_end > o_2_end):
+                    
+                
+                        
+
                 board.digital[2].write(1)
-                time.sleep(o_duration)
-                board.digital[1].write(0)
                 board.digital[2].write(0)
 
                 time.sleep(o_delay) #Add input in gooey for this time

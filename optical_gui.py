@@ -19,7 +19,7 @@ from timeit import default_timer as timer
 from datetime import timedelta
 root = Tk()
 root.title("DBS Trigger Control")
-root.geometry("450x500")
+root.geometry("870x350")
 e = Entry(root)
 n = 0
 
@@ -27,11 +27,32 @@ recording_number = []
 parameter = []
 notes = []
 
+o_1_start = 0
+o_1_end = 0
+o_2_start = 0
+o_2_end = 0
+o_3_start = 0
+o_3_end = 0
+o_4_start = 0
+o_4_end = 0
+o_5_start = 0
+o_5_end = 0
+o_6_start = 0
+o_6_end = 0
+o_7_start = 0
+o_7_end = 0
+o_8_start = 0
+o_8_end = 0
 
 
 
-o_duration = 0
-o_delay = 0
+
+#o_duration = 0
+#o_delay = 0
+
+
+
+
 pulse_number = 0
 number_of_trains = 1;run_x_times = number_of_trains
 time_between_pulses = 0
@@ -72,8 +93,30 @@ def do_train():
 #     o_duration = float(o_duration_entry.get())
 #     o_delay = float(o_delay_entry.get())
     
-    o_1_start = float(o_1_start.get())
-    o_1_end = float(o_1_end.get())
+    o_1_start = float(o_1_start_entry.get())
+    o_1_end = float(o_1_end_entry.get())
+
+    o_2_start = float(o_2_start_entry.get())
+    o_2_end = float(o_2_end_entry.get())
+
+    o_3_start = float(o_3_start_entry.get())
+    o_3_end = float(o_3_end_entry.get())
+
+    o_4_start = float(o_4_start_entry.get())
+    o_4_end = float(o_4_end_entry.get())
+
+    o_5_start = float(o_5_start_entry.get())
+    o_5_end = float(o_5_end_entry.get())
+
+    o_6_start = float(o_6_start_entry.get())
+    o_6_end = float(o_6_end_entry.get())
+
+    o_7_start = float(o_7_start_entry.get())
+    o_7_end = float(o_7_end_entry.get())
+
+    o_8_start = float(o_8_start_entry.get())
+    o_8_end = float(o_8_end_entry.get())
+    
     
     train_number = float(run_x_times_entry.get())
     pulse_number = float(pulse_num_entry.get())
@@ -92,7 +135,8 @@ def do_train():
 #         'o_duration': [o_duration] *int(train_number),
 #         'o_delay': [o_delay]* int(train_number),
         
-        
+        'o_1_start': [o_1_start]*int(train_number),
+        'o_1_end': [o_1_end]*int(train_number),
         
         'number_of_trains': [train_number]*int(train_number),
         'pulse_number': [pulse_number]*int(train_number),
@@ -187,9 +231,52 @@ notes_window = Entry(app, text='')
 # o_delay_entry = Entry(app, text="o_delay")
 # o_delay_entry.insert(0,o_delay)
 
+start_label = Label(app, text = 'start (t0)')
+end_label = Label(app, text = 'end (te)')
 
-o_1_start_entry = Entry(app, text = 'o_2')
-o_1.insert(0,o_1_start)
+o_1_start_entry = Entry(app, text = '')
+o_1_start_entry.insert(0,o_1_start)
+o_1_end_entry = Entry(app, text='')
+o_1_end_entry.insert(0,o_1_end)
+
+
+o_2_start_entry = Entry(app, text = '')
+o_2_start_entry.insert(0,o_2_start)
+o_2_end_entry = Entry(app, text='')
+o_2_end_entry.insert(0,o_2_end)
+
+o_3_start_entry = Entry(app, text = '')
+o_3_start_entry.insert(0,o_3_start)
+o_3_end_entry = Entry(app, text='')
+o_3_end_entry.insert(0,o_3_end)
+
+o_4_start_entry = Entry(app, text = '')
+o_4_start_entry.insert(0,o_4_start)
+o_4_end_entry = Entry(app, text='')
+o_4_end_entry.insert(0,o_4_end)
+
+o_5_start_entry = Entry(app, text = '')
+o_5_start_entry.insert(0,o_5_start)
+o_5_end_entry = Entry(app, text='')
+o_5_end_entry.insert(0,o_5_end)
+
+o_6_start_entry = Entry(app, text = '')
+o_6_start_entry.insert(0,o_6_start)
+o_6_end_entry = Entry(app, text='')
+o_6_end_entry.insert(0,o_6_end)
+
+o_7_start_entry = Entry(app, text = '')
+o_7_start_entry.insert(0,o_7_start)
+o_7_end_entry = Entry(app, text='')
+o_7_end_entry.insert(0,o_7_end)
+
+o_8_start_entry = Entry(app, text = '')
+o_8_start_entry.insert(0,o_8_start)
+o_8_end_entry = Entry(app, text='')
+o_8_end_entry.insert(0,o_8_end)
+
+
+
 
 pulse_num_label = Label(app, text="(pulse_number) Number_of_pulses_per_train", fg='#9900ff')
 pulse_num_entry = Entry(app, text="")
@@ -235,19 +322,50 @@ notes_window.grid(row=7, column=0)
 # o_delay_label.grid(row=3, column=1)
 # o_delay_entry.grid(row=4, column=1)
 
-o_1_start.grid(row=1, column=1)
 
-run_x_times_label.grid(row=1, column=2)
-run_x_times_entry.grid(row=2, column=2)
+start_label.grid(row=1, column=1)
+end_label.grid(row=1, column =2)
 
-pulse_num_label.grid(row=3, column=2) 
-pulse_num_entry.grid(row=4, column=2) 
+o_1_start_entry.grid(row=2, column=1)
+o_1_end_entry.grid(row=2, column =2)
 
-time_between_pulses_label.grid(row=5, column=2)
-time_between_pulses_entry.grid(row=6, column=2)
+o_2_start_entry.grid(row=3, column=1)
+o_2_end_entry.grid(row=3, column =2)
 
-time_between_trains_label.grid(row=7, column=2) 
-time_between_trains_entry.grid(row=8, column=2) 
+o_3_start_entry.grid(row=4, column=1)
+o_3_end_entry.grid(row=4, column =2)
+
+o_4_start_entry.grid(row=5, column=1)
+o_4_end_entry.grid(row=5, column =2)
+
+o_5_start_entry.grid(row=6, column=1)
+o_5_end_entry.grid(row=6, column =2)
+
+o_6_start_entry.grid(row=7, column=1)
+o_6_end_entry.grid(row=7, column =2)
+
+o_7_start_entry.grid(row=8, column=1)
+o_7_end_entry.grid(row=8, column =2)
+
+o_8_start_entry.grid(row=9, column=1)
+o_8_end_entry.grid(row=9, column =2)
+
+
+
+
+
+
+run_x_times_label.grid(row=1, column=3)
+run_x_times_entry.grid(row=2, column=3)
+
+pulse_num_label.grid(row=3, column=3) 
+pulse_num_entry.grid(row=4, column=3) 
+
+time_between_pulses_label.grid(row=5, column=3)
+time_between_pulses_entry.grid(row=6, column=3)
+
+time_between_trains_label.grid(row=7, column=3) 
+time_between_trains_entry.grid(row=8, column=3) 
 
 
 

@@ -19,7 +19,7 @@ from timeit import default_timer as timer
 from datetime import timedelta
 root = Tk()
 root.title("DBS Trigger Control")
-root.geometry("450x500")
+root.geometry("675x525")
 e = Entry(root)
 n = 0
 L = 0
@@ -37,7 +37,7 @@ pulse_number = 0
 
 time_between_trains = 0
 number_of_trains = 1;run_x_times_ = number_of_trains
-train_counter = 0
+#train_counter = count
 recording_notess = []
 recording_notesss = []
 recording_number = []
@@ -79,7 +79,7 @@ def startx():
 
 # In[1]:
 
-
+count = 0 
 def do_train():
     # records the timestamp when the run button is clicked  
     board.digital[9].write(1) # red cord / Run button / 
@@ -146,13 +146,15 @@ def do_train():
         
 
     print(all_data_df)
-
-
+    
+    
     for train in range(int(number_of_trains)):
         for pulse in range(int(pulse_number)):
             print("train "+str(train+1)+"  pulse "+str(pulse+1))
              #******start single pulse sequence
-        
+
+            count += 1
+            
             board.digital[13].write(1) #Orange cord /m Electrode / Blue Line 
             time.sleep(E_duration)
             board.digital[13].write(0)
@@ -169,8 +171,9 @@ def do_train():
             time.sleep(Time_between_pulses)
             #********end single pulse sequence
         time.sleep(time_between_trains)
+        print(count)
     
-    return all_data_df
+    return all_data_df, count
         
 
 
@@ -196,7 +199,9 @@ def update_counter():
 #Tkinter Window / Button Design code
 app = Frame(root)
 app.grid()
-
+clicked = StringVar()
+clicked_pulse = StringVar()
+clicked_polarity = StringVar()
 # start = Button(app, text="Run Indefinitely", fg = "green", command=start)
 # startx = Button(app, text='Run Train', command=startx,fg='#9900ff')
 startx = Button(app, text='Run Train', command=do_train,fg='green')
@@ -215,13 +220,13 @@ cycles_text_Label = Label(app, text='cycles')
 cycles_text_window = Entry(app, text='')
 
 pulse_train_text_Label = Label(app, text='pulse or train')
-pulse_train_text_window = Entry(app, text='')
+pulse_train_text_window = OptionMenu(app, clicked_pulse, 'pulse','train',command=callback)
 
 amplitude_text_Label = Label(app, text='amplitude (V)')
 amplitude_text_window = Entry(app, text='')
 
-polarity_text_Label = Label(app, text='polarity (a,c,b)')
-polarity_text_window = Entry(app, text='')
+polarity_text_Label = Label(app, text='polarity')
+polarity_text_window = OptionMenu(app, clicked_polarity, 'Anode', 'Cathode', 'Biphasic')
 
 pulse_width_text_Label = Label(app, text='pulse_width (μs)')
 pulse_width_text_window = Entry(app, text='')
@@ -229,8 +234,8 @@ pulse_width_text_window = Entry(app, text='')
 frequency_text_Label = Label(app, text='frequency (Hz)')
 frequency_text_window = Entry(app, text='')
 
-wave_shape_text_Label = Label(app, text='wave_shape (bi,tri)')
-wave_shape_text_window = Entry(app, text='')
+wave_shape_text_Label = Label(app, text='wave_shape')
+wave_shape_text_window = OptionMenu(app, clicked, 'Biphasic','Tri_Phasic','other')
 
 
 
@@ -267,62 +272,64 @@ Current_Loop_Number = Label(app, text = "Train Number Completed: " + str(n),fg='
 
 
 e1 = tk.Entry(root)
+## column 0
 
 
-
-E_O_Label.grid(row=0, column=1)
-E_O_Entry.grid(row=1, column=1) #pady=20 to change button distances
-
-
-O_Duration_Label.grid(row=2, column=1)
-O_Duration_Entry.grid(row=3, column=1)
-
-Time_between_pulses_label.grid(row=10, column=1)
-Time_between_pulses_entry.grid(row=11, column=1)
-
-
-time_between_trains_label.grid(row=6, column=1) 
-time_between_trains_entry.grid(row=7, column=1) 
-
-pulse_num_label.grid(row=8, column=1) 
-pulse_num_entry.grid(row=9, column=1) 
-
-run_x_times_label.grid(row=12, column=1)
-run_x_times_entry.grid(row=13, column=1)
-
-text_Label.grid(row=14, column=1)
-text_window.grid(row=15, column=1)
-
-text_1_Label.grid(row=16, column=1)
-text_1_window.grid(row=17, column=1)
-
-text_2_Label.grid(row=2, column=0)
-text_2_window.grid(row=3, column=0)
+text_2_Label.grid(row=4, column=0)
+text_2_window.grid(row=5, column=0)
 
 pulse_train_text_Label.grid(row=6, column=0)
 pulse_train_text_window.grid(row=7, column=0)
 
-amplitude_text_Label.grid(row=8, column=0)
-amplitude_text_window.grid(row=9, column=0)
+polarity_text_Label.grid(row=8, column=0)
+polarity_text_window.grid(row=9, column=0)
 
-polarity_text_Label.grid(row=10, column=0)
-polarity_text_window.grid(row=11, column=0)
+wave_shape_text_Label.grid(row=10, column=0)
+wave_shape_text_window.grid(row=11, column=0)
 
-pulse_width_text_Label.grid(row=12, column=0)
-pulse_width_text_window.grid(row=13, column=0)
+amplitude_text_Label.grid(row=12, column=0)
+amplitude_text_window.grid(row=13, column=0)
 
-frequency_text_Label.grid(row=14, column=0)
-frequency_text_window.grid(row=15, column=0)
+pulse_width_text_Label.grid(row=14, column=0)
+pulse_width_text_window.grid(row=15, column=0)
 
-wave_shape_text_Label.grid(row=16, column=0)
-wave_shape_text_window.grid(row=17, column=0)
+frequency_text_Label.grid(row=16, column=0)
+frequency_text_window.grid(row=17, column=0)
 
 cycles_text_Label.grid(row=18, column=0)
 cycles_text_window.grid(row=19, column=0)
 
+# column 1
+
+startx.grid(row=0, column=1)
+
+E_O_Label.grid(row=4, column=1)
+E_O_Entry.grid(row=5, column=1) #pady=20 to change button distances
+
+O_Duration_Label.grid(row=6, column=1)
+O_Duration_Entry.grid(row=7, column=1)
+
+time_between_trains_label.grid(row=8, column=1) 
+time_between_trains_entry.grid(row=9, column=1)
+
+pulse_num_label.grid(row=10, column=1) 
+pulse_num_entry.grid(row=11, column=1) 
+
+Time_between_pulses_label.grid(row=12, column=1)
+Time_between_pulses_entry.grid(row=13, column=1)
+
+run_x_times_label.grid(row=14, column=1)
+run_x_times_entry.grid(row=15, column=1)
+
+# column 2
+text_Label.grid(row=4, column=2)
+text_window.grid(row=5, column=2)
+
+text_1_Label.grid(row=6, column=2)
+text_1_window.grid(row=7, column=2)
 
 
-startx.grid(row=1, column=0)
+
 
 root.mainloop()
 

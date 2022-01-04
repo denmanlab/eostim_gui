@@ -151,62 +151,102 @@ def do_train():
             for pulse in range(int(pulse_number)):
                 print("train "+str(train+1)+"  pulse "+str(pulse+1))
                  #******start single pulse sequence
-                if (o_1_start > 0_2_start):
+                if (o_1_start < o_2_start) and (o_1_start < o_3_start) and (o_1_start < o_4_start):
                     
                     board.digital[1].write(1)
                     time.sleep(o_1_end)
                     board.digital[1].write(0)
-                    else:
+                    
+                if (o_1_start = o_2_start) and (o_1_start < o_3_start) and (o_1_start < o_4_start):
+                    
+                    board.digital[1].write(1)
+                    board.digital[2].write(1)
+               
+                if (o_1_end < o_2_end):
+                    
+                    time.sleep(o_1_end)
+                    board.digital[1].write(0)
+                    
+                    time.sleep(o_2_end)
+                    board.digital[2].write(0)
+                    
+                    
+                    elif (o_1_end > o_2_end):
                         
-                        board.digital[1].write(1)
-                        board.digital[2].write(1)
+                        time.sleep(o_2_end)
+                        board.digital[2].write(0)
+                        
+                        time.sleep(o_1_end)
+                        board.digital[1].write(0)
+                        
+                        elif (o_1_end = o_2_end):
+                            
+                            time.sleep(o_1_end)
+                            board.digital[1].write(0)
+                            board.digital[2].write(0)
+                            
+                            
+                            
+                            
+                        
+                
+                
+                
+                    
+                if (o_1_start = o_2_start) and (o_1_start = o_3_start) and (o_1_start = o_4_start):
+
+                    board.digital[1].write(1)
+                    board.digital[2].write(1)
+                    board.digital[3].write(1)
+                    board.digital[4].write(1)
+                    
 
                 if (o_1_end > o_2_end):
                     
                 
                         
 
-                board.digital[2].write(1)
-                board.digital[2].write(0)
+                    board.digital[2].write(1)
+                    board.digital[2].write(0)
 
-                time.sleep(o_delay) #Add input in gooey for this time
+                    time.sleep(o_delay) #Add input in gooey for this time
 
-                board.digital[3].write(1)
-                board.digital[4].write(1)
-                time.sleep(o_duration)
-                board.digital[3].write(0)
-                board.digital[4].write(0)
+                    board.digital[3].write(1)
+                    board.digital[4].write(1)
+                    time.sleep(o_duration)
+                    board.digital[3].write(0)
+                    board.digital[4].write(0)
 
-                time.sleep(o_delay)
+                    time.sleep(o_delay)
 
-                board.digital[5].write(1)
-                board.digital[6].write(1)
-                time.sleep(o_duration)
-                board.digital[5].write(0)
-                board.digital[6].write(0)
+                    board.digital[5].write(1)
+                    board.digital[6].write(1)
+                    time.sleep(o_duration)
+                    board.digital[5].write(0)
+                    board.digital[6].write(0)
 
-                time.sleep(o_delay)
+                    time.sleep(o_delay)
 
-                board.digital[5].write(1)
-                board.digital[6].write(1)
-                time.sleep(o_duration)
-                board.digital[5].write(0)
-                board.digital[6].write(0)
+                    board.digital[5].write(1)
+                    board.digital[6].write(1)
+                    time.sleep(o_duration)
+                    board.digital[5].write(0)
+                    board.digital[6].write(0)
 
-                time.sleep(o_delay)
+                    time.sleep(o_delay)
 
-                board.digital[7].write(1)
-                board.digital[8].write(1)
-                time.sleep(o_duration)
-                board.digital[7].write(0)
-                board.digital[8].write(0)
+                    board.digital[7].write(1)
+                    board.digital[8].write(1)
+                    time.sleep(o_duration)
+                    board.digital[7].write(0)
+                    board.digital[8].write(0)
 
-                train_counter = train+1
-                Current_Loop_Number.config(text="Train Number Completed: " + str(train_counter))
-                update_counter()
-                time.sleep(Time_between_pulses)
-                #********end single pulse sequence
-            time.sleep(time_between_trains)
+                    train_counter = train+1
+                    Current_Loop_Number.config(text="Train Number Completed: " + str(train_counter))
+                    update_counter()
+                    time.sleep(Time_between_pulses)
+                    #********end single pulse sequence
+                time.sleep(time_between_trains)
 
     return all_data_df
 

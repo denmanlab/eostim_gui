@@ -85,6 +85,8 @@ board = Arduino('/dev/cu.usbmodem14101')
 
 
 def do_train():
+    current_elapsed = timeit.timeit()
+    print(current_elapsed)
     
     # Update vars
     recording_number.append(recording_number_window.get())
@@ -157,31 +159,35 @@ def do_train():
         for pulse in range(int(pulse_number)):
             print("train "+str(train+1)+"  pulse "+str(pulse+1))
              #******start single pulse sequence
-            current_elapsed = timeit.timeit()
-            print(current_elapsed)
+            
+
             start_stop_list = []
             for i, (start, stop) in enumerate(start_stop.items()):
                 start_stop_times = [start, stop]
                 channel = i
                 start_stop_list.append(start_stop_times)
-#                     print(i, [start, stop])
+        #                     print(i, [start, stop])
                 print(start_stop_list[0][0])
                 print(start_stop_list[0][1])
 
                 if current_elapsed < start_stop_list[0][0]:
                     print('starting_pin')
-                    board.digital[1].write(1)
+                    board.digital[13].write(1)
 
                 if current_elapsed > start_stop_list[0][1]:
                     print('stopping_pin')
-                    board.digital[1].write(0)
+                    board.digital[13].write(0)
+
+    
 
                 train_counter = train+1
                 Current_Loop_Number.config(text="Train Number Completed: " + str(train_counter))
-                update_counter()
-                time.sleep(Time_between_pulses)
+        #         update_counter()
+                time.sleep(time_between_pulses)
                 #********end single pulse sequence
-            time.sleep(time_between_trains)
+                time.sleep(time_between_trains)
+                if current_elapsed > start_stop_list[0][1]:
+                    break
 
     return all_data_df
 

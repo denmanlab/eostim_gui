@@ -14,6 +14,7 @@ import time
 import threading 
 import pandas as pd
 import timeit
+from timeit import default_timer as timer
 from pyfirmata import Arduino 
 from os import system
 from timeit import default_timer as timer
@@ -84,9 +85,13 @@ board = Arduino('/dev/cu.usbmodem14101')
 # In[ ]:
 
 
+
+
+
 def do_train():
-    current_elapsed = timeit.timeit()
-    print(current_elapsed)
+#     current_elapsed = timeit.timeit()
+    t0 = time.time()
+  
     
     # Update vars
     recording_number.append(recording_number_window.get())
@@ -169,7 +174,11 @@ def do_train():
         #                     print(i, [start, stop])
                 print(start_stop_list[0][0])
                 print(start_stop_list[0][1])
-
+              
+                t1 = time.time()
+                current_elapsed = t1-t0
+                print(current_elapsed)
+                
                 if current_elapsed < start_stop_list[0][0]:
                     print('starting_pin')
                     board.digital[13].write(1)

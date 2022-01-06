@@ -13,6 +13,7 @@ import pyfirmata
 import time
 import threading 
 import pandas as pd
+import timeit
 from pyfirmata import Arduino 
 from os import system
 from timeit import default_timer as timer
@@ -126,7 +127,7 @@ def do_train():
   
     
 
-    all_data = {
+    all_data_df = {
         'run': [recording_number[-1]]*int(train_number),
         'parameter': [parameter[-1]]*int(train_number),
         'notes': [notes[-1]]*int(train_number),
@@ -144,109 +145,43 @@ def do_train():
         'time_between_trains': [time_between_trains]*int(train_number),
         
     }
-
-
-
+    
+    start_stop = {
+        o_1_start:o_1_end,
+        o_2_start:o_2_end,
+        o_3_start:o_3_end,
+        o_4_start:o_4_end,
+        }
+   
     for train in range(int(number_of_trains)):
-            for pulse in range(int(pulse_number)):
-                print("train "+str(train+1)+"  pulse "+str(pulse+1))
-                 #******start single pulse sequence
-                if (o_1_start < o_2_start) and (o_1_start < o_3_start) and (o_1_start < o_4_start):
-                    
+        for pulse in range(int(pulse_number)):
+            print("train "+str(train+1)+"  pulse "+str(pulse+1))
+             #******start single pulse sequence
+            current_elapsed = timeit.timeit()
+            print(current_elapsed)
+            start_stop_list = []
+            for i, (start, stop) in enumerate(start_stop.items()):
+                start_stop_times = [start, stop]
+                channel = i
+                start_stop_list.append(start_stop_times)
+#                     print(i, [start, stop])
+                print(start_stop_list[0][0])
+                print(start_stop_list[0][1])
+
+                if current_elapsed < start_stop_list[0][0]:
+                    print('starting_pin')
                     board.digital[1].write(1)
-                    time.sleep(o_1_end)
+
+                if current_elapsed > start_stop_list[0][1]:
+                    print('stopping_pin')
                     board.digital[1].write(0)
-                    
-                if (o_1_start = o_2_start) and (o_1_start < o_3_start) and (o_1_start < o_4_start):
-                    
-                    board.digital[1].write(1)
-                    board.digital[2].write(1)
-               
-                if (o_1_end < o_2_end):
-                    
-                    time.sleep(o_1_end)
-                    board.digital[1].write(0)
-                    
-                    time.sleep(o_2_end)
-                    board.digital[2].write(0)
-                    
-                    
-                    elif (o_1_end > o_2_end):
-                        
-                        time.sleep(o_2_end)
-                        board.digital[2].write(0)
-                        
-                        time.sleep(o_1_end)
-                        board.digital[1].write(0)
-                        
-                        elif (o_1_end = o_2_end):
-                            
-                            time.sleep(o_1_end)
-                            board.digital[1].write(0)
-                            board.digital[2].write(0)
-                            
-                            
-                            
-                            
-                        
-                
-                
-                
-                    
-                if (o_1_start = o_2_start) and (o_1_start = o_3_start) and (o_1_start = o_4_start):
 
-                    board.digital[1].write(1)
-                    board.digital[2].write(1)
-                    board.digital[3].write(1)
-                    board.digital[4].write(1)
-                    
-
-                if (o_1_end > o_2_end):
-                    
-                
-                        
-
-                    board.digital[2].write(1)
-                    board.digital[2].write(0)
-
-                    time.sleep(o_delay) #Add input in gooey for this time
-
-                    board.digital[3].write(1)
-                    board.digital[4].write(1)
-                    time.sleep(o_duration)
-                    board.digital[3].write(0)
-                    board.digital[4].write(0)
-
-                    time.sleep(o_delay)
-
-                    board.digital[5].write(1)
-                    board.digital[6].write(1)
-                    time.sleep(o_duration)
-                    board.digital[5].write(0)
-                    board.digital[6].write(0)
-
-                    time.sleep(o_delay)
-
-                    board.digital[5].write(1)
-                    board.digital[6].write(1)
-                    time.sleep(o_duration)
-                    board.digital[5].write(0)
-                    board.digital[6].write(0)
-
-                    time.sleep(o_delay)
-
-                    board.digital[7].write(1)
-                    board.digital[8].write(1)
-                    time.sleep(o_duration)
-                    board.digital[7].write(0)
-                    board.digital[8].write(0)
-
-                    train_counter = train+1
-                    Current_Loop_Number.config(text="Train Number Completed: " + str(train_counter))
-                    update_counter()
-                    time.sleep(Time_between_pulses)
-                    #********end single pulse sequence
-                time.sleep(time_between_trains)
+                train_counter = train+1
+                Current_Loop_Number.config(text="Train Number Completed: " + str(train_counter))
+                update_counter()
+                time.sleep(Time_between_pulses)
+                #********end single pulse sequence
+            time.sleep(time_between_trains)
 
     return all_data_df
 

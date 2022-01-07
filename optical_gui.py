@@ -166,7 +166,7 @@ def do_train():
     channel_states = [False,False,False,False,False,False,False,False]
     board_pins= [13,12,11,10,9,8,7,6]
     
-    idx, max_value= max(start_stop_l, key=lambda item: item[1])
+    idx, max_time= max(start_stop_l, key=lambda item: item[1])
 #     stop_times = []
 #     stop_times.append(start_stop_l[i][1])
 #     max_stop_time = max(stop_times)
@@ -175,16 +175,20 @@ def do_train():
     current_elapsed = 0
     
     # Want the 100 to be the highest value in the start_stop_l + 1
-    while current_elapsed < 100:
-        
-        for train in range(int(number_of_trains)):
-            for pulse in range(int(pulse_number)):
+   
+
+    for train in range(int(number_of_trains)):
+        for pulse in range(int(pulse_number)):
+            current_elapsed_s = time.process_time()
+            
+            print("train "+str(train+1)+"  pulse "+str(pulse+1))
+            current_elapsed = 0
+            print(current_elapsed)
+            while current_elapsed < (max_time+2):
                 current_elapsed = time.process_time() - current_elapsed_s
-#                 print("train "+str(train+1)+"  pulse "+str(pulse+1))
-                 #******start single pulse sequence
-#                 print(current_elapsed)
+        
                 for i in range(len(start_stop_l)):
-                   
+
                     if current_elapsed > start_stop_l[i][0] and current_elapsed < start_stop_l[i][1] and channel_states[i]==False:
 
                         print('starting_pin_'+str(i))
@@ -198,18 +202,18 @@ def do_train():
                         print(current_elapsed)
                         board.digital[board_pins[i]].write(0)
                         channel_states[i]=False
-                
-            train_counter = train+1
-            Current_Loop_Number.config(text="Train Number Completed: " + str(train_counter))
-    #         update_counter()
-            time.sleep(time_between_pulses)
-        #********end single pulse sequence
-        time.sleep(time_between_trains)
-        ## Want the 5 to be the highest value in the start_stop_l + 1
-        if current_elapsed > max_value:
-            print(max_value)
-            break
 
+       
+#             if current_elapsed > (max_time +2):
+#                 print(max_time)
+#                 break
+            time.sleep(time_between_pulses)
+            train_counter = train+1
+            print(current_elapsed)
+#             Current_Loop_Number.config(text="Train Number Completed: " + str(train_counter))
+#             update_counter()
+
+        time.sleep(time_between_trains)
 
     return all_data_df
 

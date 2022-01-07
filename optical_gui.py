@@ -161,22 +161,23 @@ def do_train():
         
         
         
-    start_stop_l = [[o_1_start,o_1_end],[o_2_start,o_2_end],[o_3_start,o_3_end],[o_4_start,o_4_end]]
-    channel_states = [False,False,False,False]
-    board_pins= [13,12,11,10]
+    start_stop_l = [[o_1_start,o_1_end],[o_2_start,o_2_end],[o_3_start,o_3_end],[o_4_start,o_4_end],[o_5_start,o_5_end],[o_6_start,o_6_end],[o_7_start,o_7_end],[o_8_start,o_8_end]]
+    channel_states = [False,False,False,False,False,False,False,False]
+    board_pins= [13,12,11,10,9,8,7,6]
   
     
     current_elapsed_s = time.process_time()
     current_elapsed = 0
     
     # Want the 100 to be the highest value in the start_stop_l + 1
-    while current_elapsed_s < 100:
-        current_elapsed = time.process_time() - current_elapsed_s
+    while current_elapsed < 100:
+        
         for train in range(int(number_of_trains)):
             for pulse in range(int(pulse_number)):
-                print("train "+str(train+1)+"  pulse "+str(pulse+1))
+                current_elapsed = time.process_time() - current_elapsed_s
+#                 print("train "+str(train+1)+"  pulse "+str(pulse+1))
                  #******start single pulse sequence
-                print(current_elapsed)
+#                 print(current_elapsed)
                 for i in range(len(start_stop_l)):
                     if current_elapsed > start_stop_l[i][0] and current_elapsed < start_stop_l[i][1] and channel_states[i]==False:
 
@@ -185,17 +186,17 @@ def do_train():
                         board.digital[board_pins[i]].write(1)
                         channel_states[i]=True
 
-                    elif current_elapsed < start_stop_l[i][0] and current_elapsed > start_stop_l[i][1] and channel_states[i]==True:
+                    elif current_elapsed > start_stop_l[i][0] and current_elapsed > start_stop_l[i][1] and channel_states[i]==True:
 
-                        print('starting_pin_'+str(i))
+                        print('stopping_pin_'+str(i))
                         print(current_elapsed)
                         board.digital[board_pins[i]].write(0)
                         channel_states[i]=False
                 
-        train_counter = train+1
-        Current_Loop_Number.config(text="Train Number Completed: " + str(train_counter))
-#         update_counter()
-        time.sleep(time_between_pulses)
+            train_counter = train+1
+            Current_Loop_Number.config(text="Train Number Completed: " + str(train_counter))
+    #         update_counter()
+            time.sleep(time_between_pulses)
         #********end single pulse sequence
         time.sleep(time_between_trains)
         ## Want the 5 to be the highest value in the start_stop_l + 1

@@ -162,10 +162,15 @@ def do_train():
         
         
     start_stop_l = [[o_1_start,o_1_end],[o_2_start,o_2_end],[o_3_start,o_3_end],[o_4_start,o_4_end],[o_5_start,o_5_end],[o_6_start,o_6_end],[o_7_start,o_7_end],[o_8_start,o_8_end]]
+    
     channel_states = [False,False,False,False,False,False,False,False]
     board_pins= [13,12,11,10,9,8,7,6]
-  
     
+    idx, max_value= max(start_stop_l, key=lambda item: item[1])
+#     stop_times = []
+#     stop_times.append(start_stop_l[i][1])
+#     max_stop_time = max(stop_times)
+                                               
     current_elapsed_s = time.process_time()
     current_elapsed = 0
     
@@ -179,6 +184,7 @@ def do_train():
                  #******start single pulse sequence
 #                 print(current_elapsed)
                 for i in range(len(start_stop_l)):
+                   
                     if current_elapsed > start_stop_l[i][0] and current_elapsed < start_stop_l[i][1] and channel_states[i]==False:
 
                         print('starting_pin_'+str(i))
@@ -200,7 +206,8 @@ def do_train():
         #********end single pulse sequence
         time.sleep(time_between_trains)
         ## Want the 5 to be the highest value in the start_stop_l + 1
-        if current_elapsed > 5:
+        if current_elapsed > max_value:
+            print(max_value)
             break
 
 

@@ -86,7 +86,7 @@ board = Arduino('/dev/cu.usbmodem14101')
 
 
 
-
+t0 = time.time()
 
 def do_train():
 #     current_elapsed = timeit.timeit()
@@ -159,44 +159,46 @@ def do_train():
         o_3_start:o_3_end,
         o_4_start:o_4_end,
         }
-   
-    for train in range(int(number_of_trains)):
-        for pulse in range(int(pulse_number)):
-            print("train "+str(train+1)+"  pulse "+str(pulse+1))
-             #******start single pulse sequence
-            
-
-            start_stop_list = []
-            for i, (start, stop) in enumerate(start_stop.items()):
-                start_stop_times = [start, stop]
-                channel = i
-                start_stop_list.append(start_stop_times)
-        #                     print(i, [start, stop])
-                print(start_stop_list[0][0])
-                print(start_stop_list[0][1])
-              
-                t1 = time.time()
-                current_elapsed = t1-t0
-                print(current_elapsed)
-                
-                if current_elapsed < start_stop_list[0][0]:
-                    print('starting_pin')
-                    board.digital[13].write(1)
-
-                if current_elapsed > start_stop_list[0][1]:
-                    print('stopping_pin')
-                    board.digital[13].write(0)
-
     
+    start_stop_l = [[o_1_start,o_1_end],[o_2_start,o_2_end]]
+    current_elapsed_s = time.process_time()
 
-                train_counter = train+1
-                Current_Loop_Number.config(text="Train Number Completed: " + str(train_counter))
-        #         update_counter()
-                time.sleep(time_between_pulses)
-                #********end single pulse sequence
-                time.sleep(time_between_trains)
-                if current_elapsed > start_stop_list[0][1]:
-                    break
+    while current_elapsed_s < 100:
+        current_elapsed = time.process_time() - current_elapsed_s
+        for train in range(int(number_of_trains)):
+                for pulse in range(int(pulse_number)):
+
+                    print("train "+str(train+1)+"  pulse "+str(pulse+1))
+                     #******start single pulse sequence
+                    print(current_elapsed)
+
+                    start_stop_list = []
+                    start_stop_list.append(start_stop_l)
+        #      
+
+                if current_elapsed > start_stop_l[0][0] and current_elapsed < start_stop_l[0][1]:
+                    print('starting_pin_1')
+                else:
+                    print('stopping_pin_1')   
+
+                if current_elapsed > start_stop_l[1][0] and current_elapsed < start_stop_l[1][1]:
+                    print('starting_pin_2')
+                else:
+                    print('stopping_pin_2')
+       
+
+
+
+        train_counter = train+1
+        Current_Loop_Number.config(text="Train Number Completed: " + str(train_counter))
+#         update_counter()
+        time.sleep(time_between_pulses)
+        #********end single pulse sequence
+        time.sleep(time_between_trains)
+        ## Make this use biggest number in list to break 
+        if current_elapsed > 5:
+            break
+       
 
     return all_data_df
 

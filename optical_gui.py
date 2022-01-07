@@ -90,7 +90,7 @@ t0 = time.time()
 
 def do_train():
 #     current_elapsed = timeit.timeit()
-    t0 = time.time()
+   
   
     
     # Update vars
@@ -150,55 +150,58 @@ def do_train():
         'pulse_number': [pulse_number]*int(train_number),
         'time_between_pulses': [time_between_pulses]* int(train_number),
         'time_between_trains': [time_between_trains]*int(train_number),
-        
     }
+        
     
-    start_stop = {
+    start_stop_d = {
         o_1_start:o_1_end,
         o_2_start:o_2_end,
         o_3_start:o_3_end,
-        o_4_start:o_4_end,
-        }
+    }
+        
+        
+        
+    start_stop_l = [[o_1_start,o_1_end],[o_2_start,o_2_end],[o_3_start,o_3_end],[o_4_start,o_4_end]]
+    channel_states = [False,False,False,False]
+    board_pins= [13,12,11,10]
+  
     
-    start_stop_l = [[o_1_start,o_1_end],[o_2_start,o_2_end]]
     current_elapsed_s = time.process_time()
-
+    current_elapsed = 0
+    
+    # Want the 100 to be the highest value in the start_stop_l + 1
     while current_elapsed_s < 100:
         current_elapsed = time.process_time() - current_elapsed_s
         for train in range(int(number_of_trains)):
-                for pulse in range(int(pulse_number)):
+            for pulse in range(int(pulse_number)):
+                print("train "+str(train+1)+"  pulse "+str(pulse+1))
+                 #******start single pulse sequence
+                print(current_elapsed)
+                for i in range(len(start_stop_l)):
+                    if current_elapsed > start_stop_l[i][0] and current_elapsed < start_stop_l[i][1] and channel_states[i]==False:
 
-                    print("train "+str(train+1)+"  pulse "+str(pulse+1))
-                     #******start single pulse sequence
-                    print(current_elapsed)
+                        print('starting_pin_'+str(i))
+                        print(current_elapsed)
+                        board.digital[board_pins[i]].write(1)
+                        channel_states[i]=True
 
-                    start_stop_list = []
-                    start_stop_list.append(start_stop_l)
-        #      
+                    elif current_elapsed < start_stop_l[i][0] and current_elapsed > start_stop_l[i][1] and channel_states[i]==True:
 
-                if current_elapsed > start_stop_l[0][0] and current_elapsed < start_stop_l[0][1]:
-                    print('starting_pin_1')
-                else:
-                    print('stopping_pin_1')   
-
-                if current_elapsed > start_stop_l[1][0] and current_elapsed < start_stop_l[1][1]:
-                    print('starting_pin_2')
-                else:
-                    print('stopping_pin_2')
-       
-
-
-
+                        print('starting_pin_'+str(i))
+                        print(current_elapsed)
+                        board.digital[board_pins[i]].write(0)
+                        channel_states[i]=False
+                
         train_counter = train+1
         Current_Loop_Number.config(text="Train Number Completed: " + str(train_counter))
 #         update_counter()
         time.sleep(time_between_pulses)
         #********end single pulse sequence
         time.sleep(time_between_trains)
-        ## Make this use biggest number in list to break 
+        ## Want the 5 to be the highest value in the start_stop_l + 1
         if current_elapsed > 5:
             break
-       
+
 
     return all_data_df
 

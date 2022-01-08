@@ -28,6 +28,7 @@ n = 0
 recording_number = []
 parameter = []
 notes = []
+number_of_trains = 1;run_x_times_ = number_of_trains
 
 o_1_start = 0
 o_1_end = 0
@@ -97,9 +98,6 @@ def do_train():
     recording_number.append(recording_number_window.get())
     parameter.append(parameter_window.get())
     notes.append(notes_window.get())
-
-#     o_duration = float(o_duration_entry.get())
-#     o_delay = float(o_delay_entry.get())
     
     o_1_start = float(o_1_start_entry.get())
     o_1_end = float(o_1_end_entry.get())
@@ -152,15 +150,7 @@ def do_train():
         'time_between_trains': [time_between_trains]*int(train_number),
     }
         
-    
-    start_stop_d = {
-        o_1_start:o_1_end,
-        o_2_start:o_2_end,
-        o_3_start:o_3_end,
-    }
-        
-        
-        
+   
     start_stop_l = [[o_1_start,o_1_end],[o_2_start,o_2_end],[o_3_start,o_3_end],[o_4_start,o_4_end],[o_5_start,o_5_end],[o_6_start,o_6_end],[o_7_start,o_7_end],[o_8_start,o_8_end]]
     
     channel_states = [False,False,False,False,False,False,False,False]
@@ -177,7 +167,8 @@ def do_train():
     # Want the 100 to be the highest value in the start_stop_l + 1
    
 
-    for train in range(int(number_of_trains)):
+    for train in range(int(train_number)):
+        print('here')
         for pulse in range(int(pulse_number)):
             current_elapsed_s = time.process_time()
             
@@ -203,15 +194,12 @@ def do_train():
                         board.digital[board_pins[i]].write(0)
                         channel_states[i]=False
 
-       
-#             if current_elapsed > (max_time +2):
-#                 print(max_time)
-#                 break
-            time.sleep(time_between_pulses)
-            train_counter = train+1
-            print(current_elapsed)
+#             train_counter = train+1
 #             Current_Loop_Number.config(text="Train Number Completed: " + str(train_counter))
 #             update_counter()
+            
+            time.sleep(time_between_pulses)
+            
 
         time.sleep(time_between_trains)
 

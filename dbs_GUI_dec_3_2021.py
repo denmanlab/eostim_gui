@@ -141,10 +141,10 @@ def do_train():
     
     timestamp_string = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     
-    path = '/Users/granthughes/Desktop/Denman_lab/dbs_files/data_frames/dbs_run_dataframes/'
-    recording_folder = 'jhl2_test/'
+#     path = '/Users/granthughes/Desktop/Denman_lab/dbs_files/data_frames/dbs_run_dataframes/'
+#     recording_folder = 'jhl2_test/'
     
-    all_data_df.to_csv(path +recording_folder + timestamp_string + '.csv')
+#     all_data_df.to_csv(path +recording_folder + timestamp_string + '.csv')
         
 
     print(all_data_df)

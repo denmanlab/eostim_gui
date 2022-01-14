@@ -91,7 +91,7 @@ t0 = time.time()
 
 def do_train():
 #     current_elapsed = timeit.timeit()
-   
+    t0 = time.process_time()
   
     
     # Update vars
@@ -154,7 +154,7 @@ def do_train():
     start_stop_l = [[o_1_start,o_1_end],[o_2_start,o_2_end],[o_3_start,o_3_end],[o_4_start,o_4_end],[o_5_start,o_5_end],[o_6_start,o_6_end],[o_7_start,o_7_end],[o_8_start,o_8_end]]
     
     channel_states = [False,False,False,False,False,False,False,False]
-    board_pins= [13,12,11,10,9,8,7,6]
+    board_pins= [8,7,6,5,4,3,2]
     
     idx, max_time= max(start_stop_l, key=lambda item: item[1])
 #     stop_times = []
@@ -166,16 +166,15 @@ def do_train():
     
     # Want the 100 to be the highest value in the start_stop_l + 1
    
-
+    
     for train in range(int(train_number)):
-        print('here')
         for pulse in range(int(pulse_number)):
             current_elapsed_s = time.process_time()
             
             print("train "+str(train+1)+"  pulse "+str(pulse+1))
             current_elapsed = 0
-            print(current_elapsed)
-            while current_elapsed < (max_time+2):
+            while current_elapsed < (max_time + 0.0001):
+               
                 current_elapsed = time.process_time() - current_elapsed_s
         
                 for i in range(len(start_stop_l)):
@@ -194,10 +193,7 @@ def do_train():
                         board.digital[board_pins[i]].write(0)
                         channel_states[i]=False
 
-#             train_counter = train+1
-#             Current_Loop_Number.config(text="Train Number Completed: " + str(train_counter))
-#             update_counter()
-            
+                
             time.sleep(time_between_pulses)
             
 

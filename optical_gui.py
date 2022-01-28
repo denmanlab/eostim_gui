@@ -132,7 +132,7 @@ def do_train():
   
     
 
-    all_data_df = {
+    all_data = {
         'run': [recording_number[-1]]*int(train_number),
         'parameter': [parameter[-1]]*int(train_number),
         'notes': [notes[-1]]*int(train_number),
@@ -143,6 +143,12 @@ def do_train():
         
         'o_1_start': [o_1_start]*int(train_number),
         'o_1_end': [o_1_end]*int(train_number),
+        'o_2_start': [o_2_start]*int(train_number),
+        'o_2_end': [o_2_end]*int(train_number),
+        'o_3_start': [o_3_start]*int(train_number),
+        'o_3_end': [o_3_end]*int(train_number),
+        'o_4_start': [o_4_start]*int(train_number),
+        'o_4_end': [o_4_end]*int(train_number),
         
         'number_of_trains': [train_number]*int(train_number),
         'pulse_number': [pulse_number]*int(train_number),
@@ -150,7 +156,13 @@ def do_train():
         'time_between_trains': [time_between_trains]*int(train_number),
     }
         
-   
+    all_data_df = pd.DataFrame(all_data)
+    timestamp_string = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    path = '/Users/granthughes/Desktop/multi_optical_csv/'
+    recording_folder = 'test_01_28_22/'
+    
+    all_data_df.to_csv(path +recording_folder + timestamp_string + '.csv')
+    
     start_stop_l = [[o_1_start,o_1_end],[o_2_start,o_2_end],[o_3_start,o_3_end],[o_4_start,o_4_end],[o_5_start,o_5_end],[o_6_start,o_6_end],[o_7_start,o_7_end],[o_8_start,o_8_end]]
     
     channel_states = [False,False,False,False,False,False,False,False]
